@@ -4,58 +4,39 @@ function PackageCard({ name, duration, groupSize, price, img, description, inclu
     const [showMore, setShowMore] = useState(false)
 
     return (
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
 
-            <div className="relative h-56 overflow-hidden">
-                <img
-                    src={img}
-                    alt={name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute top-3 right-3 bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded-full">
-                    PKR {price}
-                </div>
-            </div>
+            <img
+                src={img}
+                alt={name}
+                className="w-full h-48 object-cover"
+            />
 
-            <div className="p-5 flex flex-col flex-1">
+            <div className="p-4">
 
-                <h2 className="text-xl font-bold text-gray-800 mb-3">{name}</h2>
-
-                <div className="flex items-center gap-4 mb-3">
-                    <span className="text-sm text-gray-500 flex items-center gap-1">
-                         {duration}
-                    </span>
-                    <span className="text-sm text-gray-500 flex items-center gap-1">
-                         {groupSize}
-                    </span>
+                <div className="flex justify-between items-start mb-2">
+                    <h2 className="text-lg font-semibold text-gray-800">{name}</h2>
+                    <span className="text-blue-600 font-bold text-sm">PKR {price}</span>
                 </div>
 
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                    {showMore ? description : `${description.slice(0, 80)}...`}
+                <p className="text-gray-400 text-xs mb-3">{duration} &bull; {groupSize}</p>
+
+                <p className="text-gray-600 text-sm mb-3">
+                    {showMore ? description : `${description.slice(0, 90)}...`}
                     <button
                         onClick={() => setShowMore(!showMore)}
-                        className="text-blue-600 hover:text-blue-700 font-medium ml-1"
+                        className="text-blue-500 text-sm ml-1 underline"
                     >
-                        {showMore ? 'See Less' : 'See More'}
+                        {showMore ? 'less' : 'more'}
                     </button>
                 </p>
 
-                <div className="mb-4">
-                    <p className="text-sm font-semibold text-gray-700 mb-2">Includes:</p>
-                    <div className="flex flex-wrap gap-2">
-                        {includes.map((item, index) => (
-                            <span
-                                key={index}
-                                className="bg-blue-50 text-blue-600 text-xs font-medium px-3 py-1 rounded-full border border-blue-200"
-                            >
-                                 {item}
-                            </span>
-                        ))}
-                    </div>
-                </div>
+                <p className="text-xs text-gray-500 mb-3">
+                    Includes: {includes.join(', ')}
+                </p>
 
-                <button className="mt-auto w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-xl transition-colors duration-200">
-                    Book Package
+                <button className="w-full bg-blue-600 text-white text-sm py-2 rounded-lg hover:bg-blue-700">
+                    Book Now
                 </button>
 
             </div>
