@@ -9,6 +9,7 @@ function GlobalState({children}) {
     const [loading,setLoading]=useState(false)
     const [recipeList,setRecipeList]=useState([])
     const [favoriteList, setFavoriteList] = useState([]);
+    const [recipeDetailsDatat, setrecipeDetailsDatat] = useState([]);
     async function HandleSubmit(e){
         e.preventDefault()
         setLoading(true)
@@ -46,7 +47,7 @@ function addToFavorite(item) {
 
 
     return (  
-       <GlobalContext.Provider value={{favoriteList, addToFavorite,loading,recipeList,searchData,setSearchData,HandleSubmit}}>
+       <GlobalContext.Provider value={{recipeDetailsDatat, setrecipeDetailsDatat,favoriteList, addToFavorite,loading,setLoading,recipeList,searchData,setSearchData,HandleSubmit}}>
         {children}
        </GlobalContext.Provider>
 

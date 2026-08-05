@@ -10,11 +10,12 @@ function Recipe({ item }) {
             <div className="p-4">
                 <h3 className="font-semibold text-gray-800 truncate">{item.title}</h3>
                 <p className="text-sm text-orange-600 mt-1">{item.publisher}</p>
-                 <Link to={`/recipe-item/${item?.id}`} className="text-orange-600 font-medium hover:underline" >
+                 <Link to={`/details/${item?.id}`} className="text-orange-600 font-medium hover:underline" >
                         View Details
                     </Link>
+                    <br />
                     <button onClick={() => addToFavorite(item)} className={`text-xl ${isFav ? 'text-red-500' : 'text-gray-300'}`} >
-                        {' '}Like
+                        Like
                     </button>
             </div>
         </div>

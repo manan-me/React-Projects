@@ -12,7 +12,7 @@ const router=createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Layout/>}>
        <Route path='' element={<Home/>}/>
-       <Route path='recipie-item/:id' element={<Details/>}/>
+       <Route path='details/:id' element={<Details/>}/>
        <Route path='favorities' element={<Favorities/>}/>
 
     </Route>
