@@ -1,97 +1,75 @@
-import { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { GlobalContext } from "../../Context/context";
+import { useContext, useEffect } from "react"
+import { GlobalContext } from "../../Context/context"
+import { useParams } from "react-router-dom"
 
 function Details() {
-    const { id } = useParams();
-    const { loading, setLoading, recipeDetailsDatat, setrecipeDetailsDatat, favoriteList, addToFavorite } = useContext(GlobalContext);
+    const {HandleAddToFavorites,favoritesList,recipeDetailsDatat,setLoading,loading,setRecipeDetailsDatat,}=useContext(GlobalContext)
+    const {id}=useParams()
+    const isFavorite = favoritesList.indexOf(recipeDetailsDatat?.id) >= 0
 
-    useEffect(() => {
-        async function fetchDetails() {  
-            setLoading(true);
-            try {
-                const res=await fetch(`https://forkify-api.jonas.io/api/v2/recipes/${id}`)
-                const data = await res.json();  
-                
-                setrecipeDetailsDatat(data?.data?.recipe); 
-                setLoading(false);
-            } catch (error) {
-                console.log(error.message);
-                setLoading(false);
-            }
+
+
+
+    useEffect(()=>{
+        async function DetailsGetter() {
+          setLoading(true)
+          try {
+            const res=await fetch(`https://forkify-api.jonas.io/api/v2/recipes/${id}`)
+            const data=await res.json()
+            console.log(data);
+            setRecipeDetailsDatat(data?.data?.recipe)
+            setLoading(false)
+            
+        } catch (error) {
+            console.log(error.message);
+            setLoading(false)
+            
+          }
+            
         }
-        fetchDetails();
-    }, [id]);  
-
-    const isFav = favoriteList?.find(f => f.id === recipeDetailsDatat?.id);
-
-       if (loading) return <div>Loading...</div>;
+        DetailsGetter()
+        
+        
+    },[id])
 
 
-    if (!recipeDetailsDatat) return (
-        <div className="text-center mt-20 text-gray-500">Recipe not found!</div>
-    );
+    if(loading) return <div className="text-center mt-20 text-gray-500">Loading... Please Wait</div>
 
-    return (
-        <div className="container mx-auto px-6 py-10 max-w-3xl">
-
-            <div className="relative">
+    
+    return <div className="max-w-3xl mx-auto px-4 py-8">
+        <div className="bg-white rounded-2xl shadow overflow-hidden">
+            <div>
                 <img
-                    src={recipeDetailsDatat?.image_url}
-                    alt={recipeDetailsDatat?.title}
-                    className="w-full h-72 object-cover rounded-xl shadow-lg"
-                />
-                <br />
-                <button
-                    onClick={() => addToFavorite(recipeDetailsDatat)}
-                    className={`absolute top-4 right-4 text-3xl transition-transform hover:scale-110 ${isFav ? 'text-red-500' : 'text-white'}`}
-                >
-                    Like
-                </button>
+                 src={recipeDetailsDatat?.image_url} 
+                 alt={recipeDetailsDatat?.title}
+                 className="w-full h-64 object-cover" />
             </div>
-
-            <h1 className="text-3xl font-bold text-gray-800 mt-6">
-                {recipeDetailsDatat?.title}
-            </h1>
-            <p className="text-orange-600 font-medium mt-1">
-                By {recipeDetailsDatat?.publisher}
-            </p>
-
-            <div className="flex gap-6 mt-4 text-gray-600">
-                <span>{recipeDetailsDatat?.cooking_time} minutes</span>
-                <span> {recipeDetailsDatat?.servings} servings</span>
+            <div className="px-6 pt-4">
+                <p className="text-sm text-gray-500">{recipeDetailsDatat?.publisher}</p>
             </div>
+            <div className="px-6 pt-1">
+                <h1 className="text-2xl font-bold text-gray-800">{recipeDetailsDatat?.title}</h1>
+            </div>
+            <div className="p-4">
+                    <button 
+                    onClick={() => HandleAddToFavorites(recipeDetailsDatat?.id)}
+                    className={`text-sm px-3 py-1 rounded-full ${isFavorite ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-600'}`}>
+                        Like
+                    </button>
+            </div>
+            <div className="px-6 pb-6">
+                <h1 className="text-lg font-semibold text-gray-800 mb-3">Ingredients</h1>
+                <div>
+                    <ul className="grid grid-cols-2 gap-2">
+                        {recipeDetailsDatat?.ingredients?.map((item,index)=> <li key={index} className="bg-orange-50 rounded-lg px-3 py-2 text-sm text-gray-700">
+                                    <span className="font-medium">{item?.quantity} {item?.unit} </span>
+                                    <span>{item?.description}</span>
 
-            <h2 className="text-xl font-bold text-gray-800 mt-8 mb-4">
-                Ingredients
-            </h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {recipeDetailsDatat?.ingredients?.map((ing, i) => (
-                    <li
-                        key={i}
-                        className="bg-orange-50 border border-orange-100 rounded-lg p-3 text-sm text-gray-700 flex items-start gap-2"
-                    >
-                        <span className="text-orange-500 mt-0.5">✔</span>
-                        <span>
-                            {ing.quantity} {ing.unit} {ing.description}
-                        </span>
-                    </li>
-                ))}
-            </ul>
-
-            {recipeDetailsDatat?.source_url && (
-                <a
-                    href={recipeDetailsDatat.source_url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-block mt-8 bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-full font-medium transition-colors duration-200"
-                >
-                    View Full Recipe →
-                </a>
-            )}
-
+                        </li>)}
+                    </ul>
+                </div>
+            </div>
         </div>
-    );
+    </div>
 }
-
-export default Details;
+export default Details

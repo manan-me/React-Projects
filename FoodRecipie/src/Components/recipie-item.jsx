@@ -1,25 +1,41 @@
-import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { GlobalContext } from "../Context/context";
+import { Link,NavLink } from 'react-router-dom';
+
 function Recipe({ item }) {
-     const { favoriteList, addToFavorite } = useContext(GlobalContext);
-    const isFav = favoriteList.find(f => f.id === item.id);
-    return (
-        <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-            <img src={item.image_url} alt={item.title} className="w-full h-48 object-cover" />
-            <div className="p-4">
-                <h3 className="font-semibold text-gray-800 truncate">{item.title}</h3>
-                <p className="text-sm text-orange-600 mt-1">{item.publisher}</p>
-                 <Link to={`/details/${item?.id}`} className="text-orange-600 font-medium hover:underline" >
-                        View Details
+    const { HandleAddToFavorites, favoritesList } = useContext(GlobalContext)
+    const isFavorite = favoritesList.indexOf(item.id) >= 0
+
+    return ( 
+          <div className="bg-white rounded-xl shadow overflow-hidden">
+            <div>
+                <NavLink to={`/details/${item.id}`}>
+                    <div>
+                    <img src={item.image_url} alt={item.title} className="w-full h-48 object-cover" />
+                </div>
+                </NavLink>
+                <div className="p-4">
+                    <h1 className="text-base font-semibold text-gray-800">{item.title}</h1>
+                    <p className="text-sm text-gray-500">{item.publisher}</p>
+
+                </div>
+                <div className="px-4">
+                    <Link to={`/details/${item.id}`} className="text-sm text-blue-600 hover:underline">
+                    Details
                     </Link>
-                    <br />
-                    <button onClick={() => addToFavorite(item)} className={`text-xl ${isFav ? 'text-red-500' : 'text-gray-300'}`} >
+                </div>
+                <div className="p-4">
+                    <button 
+                    onClick={() => HandleAddToFavorites(item.id)}
+                    className={`text-sm px-3 py-1 rounded-full ${isFavorite ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-600'}`}>
                         Like
                     </button>
+                </div>
             </div>
-        </div>
-    );
+
+
+          </div>
+     );
 }
 
 export default Recipe;

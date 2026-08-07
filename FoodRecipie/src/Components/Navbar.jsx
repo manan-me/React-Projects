@@ -1,9 +1,17 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { GlobalContext } from "../Context/context";
+import { useNavigate } from "react-router-dom";
+
 
 function NavBar() {
     const {searchData,setSearchData,HandleSubmit}=useContext(GlobalContext)
+    const navigate = useNavigate()
+     const handleSubmit = (e) => {
+        e.preventDefault()
+        HandleSubmit()   
+        navigate('/')     
+    }
     
     return ( 
           <nav className="flex justify-between items-center px-6  py-16 container mx-auto flex-col lg:flex-row">
@@ -14,7 +22,7 @@ function NavBar() {
                 </NavLink>
             </div>
 
-            <form onSubmit={HandleSubmit} >
+            <form onSubmit={handleSubmit} >
             <input 
             type="text" 
             name="search"
